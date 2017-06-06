@@ -71,4 +71,7 @@ def get_records(url, db, uid, pw, table, mode, ids):
 
     """
     models = xmlrpc.client.ServerProxy('{}/xmlrpc/2/object'.format(url))
-    return models.execute_kw(db, uid, pw, table, mode, [ids], {'fields':['id', 'customer', 'create_date', 'website', 'country_id', 'lang', 'name', 'create_uid', 'email', 'street', 'zip', 'city']})
+    response = models.execute_kw(db, uid, pw, table, mode, [ids], {'fields':['id', 'create_date', 'website', 'country_id', 'lang', 'name', 'create_uid', 'email', 'street', 'zip', 'city']})
+    print("Le type de ce truc est = {} et chaque element est de type = {}".format(type(response), type(response[0])))
+    print("Ces records ressemblent à = {}".format(response))
+    return response

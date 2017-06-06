@@ -25,11 +25,21 @@ if(access):
 
 # Et enfin on crée un serveur HTTP
 class Server(http.server.SimpleHTTPRequestHandler):
+    def do_OPTIONS(self):
+        self.send_response(200, 'ok')
+        self.send_header('Access-Control-Allow-Origin', '*')
+        self.send_header('Access-Control-Allow-Methods', 'GET, OPTIONS')
+        self.send_header("Access-Control-Allow-Headers", "X-Requested-With")
+        self.send_header("Access-Control-Allow-Headers", "Content-Type")
+        self.end_headers()
+
     def do_GET(self):
         self.send_response(200, 'OK')
         self.send_header('Content-type', 'application/json')
+        self.send_header('Access-Control-Allow-Origin', '*')
         self.end_headers()
-        self.wfile.write(" ".join(str(x) for x in all_records).encode("utf-8"))
+        self.wfile.write(json.dumps(all_records).encode("utf-8"))
+        #self.wfile.write(" ".join(str(x) for x in all_records).encode("utf-8"))
 
     def serve_forever(port):
         socketserver.TCPServer(('', port), Server).serve_forever()
